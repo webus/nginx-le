@@ -1,13 +1,12 @@
-FROM nginx:stable-alpine
+FROM openresty/openresty:alpine-fat
 
-ADD conf/nginx.conf /etc/nginx/nginx.conf
-#ADD conf/service.conf /etc/nginx/conf.d/service.conf
+RUN rm -rf /usr/local/openresty/nginx/conf/nginx.conf
+ADD conf/nginx.conf /usr/local/openresty/nginx/conf/nginx.conf
 
 ADD script/entrypoint.sh /entrypoint.sh
 ADD script/le.sh /le.sh
 
 RUN \
- rm /etc/nginx/conf.d/default.conf && \
  chmod +x /entrypoint.sh && \
  chmod +x /le.sh && \
  apk add  --update certbot tzdata openssl && \
